@@ -42,3 +42,66 @@ func GetWebPageContent(url string) (string, error) {
 
 	return string(body), nil
 }
+
+type UserStatus int
+
+const (
+	UserStatusActive   UserStatus = 1
+	UserStatusInactive UserStatus = 2
+)
+
+/**
+ * @brief 用户结构体
+ */
+type User struct {
+	UserID int        `json:"userID"` // 用户ID //将ID修改为userID
+	Emails string     `json:"emails"` // 用户邮箱
+	Phone  string     `json:"phone"`  // 用户电话
+	Status UserStatus `json:"status"` // 用户状态
+}
+
+/**
+ * 根据ID获取用户信息
+ * @param id 用户ID
+ * @param users 用户列表
+ * @returns {User} 用户对象
+ */
+func GetUserById(id int, users []User) (User, error) {
+	for _, user := range users {
+		if user.UserID == id {
+			return user, nil
+		}
+	}
+	return User{}, fmt.Errorf("user with ID %d not found", id)
+}
+
+// 根据邮箱获取用户信息
+func GetUserByEmail(email string, users []User) (User, error) {
+	for _, user := range users {
+		if user.Emails == email {
+			return user, nil
+		}
+	}
+	return User{}, fmt.Errorf("user with email %s not found", email)
+}
+
+// 根据电话获取用户信息
+func GetUserByPhone(phone string, users []User) (User, error) {
+	for _, user := range users {
+		if user.Phone == phone {
+			return user, nil
+		}
+	}
+	return User{}, fmt.Errorf("user with phone %s not found", phone)
+}
+
+// 查找活跃用户
+func FindActiveUsers(users []User) []User {
+	var activeUsers []User
+	for _, user := range users {
+		if user.Status == UserStatusActive {
+			activeUsers = append(activeUsers, user)
+		}
+	}
+	return activeUsers
+}
