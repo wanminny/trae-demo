@@ -95,13 +95,13 @@ func GetUserByPhone(phone string, users []User) (User, error) {
 	return User{}, fmt.Errorf("user with phone %s not found", phone)
 }
 
-// 查找活跃用户
-func FindActiveUsers(users []User) []User {
-	var activeUsers []User
+// 查找非活跃用户
+func FindInactiveUsers(users []User) []User {
+	var inactiveUsers []User
 	for _, user := range users {
-		if user.Status == UserStatusActive {
-			activeUsers = append(activeUsers, user)
+		if user.Status == UserStatusInactive {
+			inactiveUsers = append(inactiveUsers, user)
 		}
 	}
-	return activeUsers
+	return inactiveUsers
 }
